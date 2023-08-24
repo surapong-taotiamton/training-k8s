@@ -6,13 +6,16 @@ spec:
   selector:
     app: nginx
   ports:
-    - protocol: TCP
+    - name: port-a
+      protocol: TCP
       port: 80
       targetPort: 80
-    - protocol: TCP
+    - name: port-b
+      protocol: TCP
       port: 81
       targetPort: 80
-    - protocol: TCP
+    - name: port-c
+      protocol: TCP
       port: 82
       targetPort: 81
 
