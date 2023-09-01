@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: database-pod
+  labels:
+    app: database-maria   
+spec:
+  selector:
+    matchLabels:
+      app: database-maria
+  template:
+    metadata:
+      labels:
+        app: database-maria
+    spec:
+      containers:
+      - name: database-maria
+        imagePullPolicy: Always
+        image: mariadb:10.10
+        env:
+        - name: MARIADB_ROOT_PASSWORD
+          value: root
+        ports:
+        - containerPort: 3306
+          name: database-port
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: database-volume
+      volumes:
+        - name: database-volume
+          persistentVolumeClaim:
+            claimName: database-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: database-service
+spec:
+  selector:
+    app: database-maria
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
+      nodePort: 32110
+  type: NodePort
