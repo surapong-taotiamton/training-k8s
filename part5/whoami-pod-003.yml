@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: whoami-pod
+  labels:
+    app: whoami
+spec:
+  containers:
+    - name: whoami-container
+      image: traefik/whoami
+      ports:
+        - containerPort: 80
+      env:
+        - name: "OWNER"
+          value: "WASINEE"
+        - name: "CONFIG_DATABASE_FOR_CONNECTION"
+          valueFrom:
+            configMapKeyRef:
+              name: "basic-configmap"
+              key: "CONFIG_DATABASE"

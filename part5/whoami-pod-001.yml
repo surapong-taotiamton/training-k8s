@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: whoami-pod
+  labels:
+    app: whoami
+spec:
+  containers:
+    - name: whoami-container
+      image: traefik/whoami
+      ports:
+        - containerPort: 80
+      env:
+        - name: config1
+          value: "data config 1"
+        - name: config2
+          value: "data config 2"
+        - name: CONFIG_DATABASE
+          value: "EXAMPLE CONFIG"
+---

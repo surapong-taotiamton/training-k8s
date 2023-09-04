@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: basic-configmap
+data:
+  config1: "data config 1"
+  config2: "data config 2"
+  CONFIG_DATABASE: "EXAMPLE CONFIG"
