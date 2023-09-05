@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: whoami-pod
+  labels:
+    app: whoami
+spec:
+  containers:
+    - name: whoami-container
+      image: traefik/whoami
+      ports:
+        - containerPort: 80
+      env:
+        - name: "OWNER"
+          value: "WASINEE"
+        - name: "CONFIG_DATABASE_PASSWORD"
+          valueFrom:
+            secretKeyRef:
+              name: "basic-secret"
+              key: "password"
+---
+# ส่วนนี้ประกาศ Service เฉยๆ
+apiVersion: v1
+kind: Service
+metadata:
+  name: whoami-service
+spec:
+  selector:
+    app: whoami
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 32020
+  type: NodePort
