@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wordpress-deployment
+  labels:
+    app: wordpress-app   
+spec:
+  selector:
+    matchLabels:
+      app: wordpress-app
+  template:
+    metadata:
+      labels:
+        app: wordpress-app
+    spec:
+      containers:
+      - name: wordpress-app
+        imagePullPolicy: Always
+        image: wordpress:6.3.1-apache
+        envFrom:
+          - configMapRef:
+              name: wordpress-configmap
+        ports:
+        - containerPort: 80
+          name: wordpress-port
