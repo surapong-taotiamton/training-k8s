@@ -1,0 +1,10 @@
+domain: "company-c.com"
+owner: "NORMAL PROGRAMMER"
+
+customEnvironment:
+  CUSTOM_VALUE_1 : "WASINEE"
+  CUSTOM_VALUE_2 : "PICHAYA"
+  CUSTOM_VALUE_3 : "SUNISA"
+  MY_TIMEZONE: "Asia/Bangkok"
+  MAX_RETRY: "5"
+  USERNAME: "TEST_USER"
