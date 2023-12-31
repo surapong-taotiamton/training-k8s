@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: whoami-deployment
+  labels:
+    app: whoami
+spec:
+  selector:
+    matchLabels:
+      app: whoami-app
+  template:
+    metadata:
+      labels:
+        app: whoami-app
+    spec:
+      containers:
+        - name: whoami-container
+          image: traefik/whoami
+          ports:
+            - containerPort: 80
+          env:
+            - name: "OWNER"
+              value: {{ .Values.owner }}
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-bug-deployment
+  labels:
+    app: nginx-bug
+spec:
+  selector:
+    matchLabels:
+      app: nginx-bug-app
+  template:
+    metadata:
+      labels:
+        app: nginx-bug-app
+    spec:
+      containers:
+        - name: nginx-bug-container
+          image: nginx:1.25.3-alpine
+          ports:
+            - containerPort: 80
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: whoami-ingress
+spec:
+  rules:
+    - host: {{ .Values.domain }}
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: whoami-service
+              port:
+                number: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: whoami-service
+spec:
+  selector:
+    app: whoami-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP
